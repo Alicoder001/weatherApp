@@ -3,20 +3,26 @@ const btn = document.querySelector(".btn");
 const weatherKey = "96b947a45d33d7dc1c49af3203966408";
 const main = document.getElementById("main");
 
-// const unsplashKey = "QrOd5aoq5GxWD3kTyGcl1YcolFwVpuxs94RB4JRg3ms";
+const unsplashKey = "QrOd5aoq5GxWD3kTyGcl1YcolFwVpuxs94RB4JRg3ms";
 
-// let unsplashApi = `https://api.unsplash.com/search/photos?page=1&query=${text}&client_id=${unsplashKey}`;
 formEl.addEventListener("submit", (e) => {
 	e.preventDefault();
 	const nameEl = formEl.input.value.trim();
 	let weatherApi = `https://api.openweathermap.org/data/2.5/weather?q=${nameEl}&units=metric&appid=${weatherKey}`;
-
-	getData(weatherApi).then((data) => {
-		updateUL(data);
-		console.log(data);
-	});
+	let unsplashApi = `https://api.unsplash.com/search/photos?page=1&query=${nameEl}&client_id=${unsplashKey}`;
+	fullData(weatherApi, unsplashApi);
 });
-
+function fullData(weatherApi, unsplashApi) {
+	getData(weatherApi).then((data) => {
+		getImage(unsplashApi)
+			.then((image) => {
+				updateUL(data, image);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	});
+}
 function loader(data) {
 	if (data) {
 		indicatorEl.innerHTML = `<p class="loadingText">Loading...</p>
@@ -29,7 +35,10 @@ function loader(data) {
 		indicatorEl.innerHTML = "";
 	}
 }
-function updateUL(weather) {
+function updateUL(weather, image) {
+	console.log(image.results[0].urls.regular);
+	document.body.style.backgroundImage = `url("${image.results[0].urls.regular}")`;
+	console.log(image);
 	main.innerHTML = `<div class="mainBlock">
     <h1 class="cityName">${weather.name}</h1>
     <div class="infoBlock">

@@ -10,3 +10,9 @@ const getData = async (api) => {
 	loader(false);
 	return data;
 };
+const getImage = async (api) => {
+	const request = await fetch(api);
+	const data = request.json();
+	Error("Something went wrong");
+	return data;
+};
