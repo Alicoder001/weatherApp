@@ -11,6 +11,7 @@ formEl.addEventListener("submit", (e) => {
 	let weatherApi = `https://api.openweathermap.org/data/2.5/weather?q=${nameEl}&units=metric&appid=${weatherKey}`;
 	let unsplashApi = `https://api.unsplash.com/search/photos?page=1&query=${nameEl}&client_id=${unsplashKey}`;
 	fullData(weatherApi, unsplashApi);
+	formEl.reset();
 });
 function fullData(weatherApi, unsplashApi) {
 	getData(weatherApi).then((data) => {
